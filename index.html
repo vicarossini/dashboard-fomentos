@@ -1,1 +1,181 @@
-<!doctype html><meta charset="utf-8"><title>Carregando dashboard...</title><script src="part1.js"></script><script src="part2.js"></script><script src="part3.js"></script><script src="part4.js"></script><script src="part5.js"></script><script src="part6.js"></script><script src="part7.js"></script><script>document.open();document.write(new TextDecoder().decode(Uint8Array.from(atob(window.__dashboardB64),c=>c.charCodeAt(0))));document.close();</script>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Radar de Oportunidades de Fomento</title>
+<style>
+:root{
+  --bosch-blue:#007BC0;
+  --bosch-blue-dark:#005B8F;
+  --bosch-red:#E20015;
+  --ink:#24323D;
+  --muted:#667782;
+  --line:#DDE5EA;
+  --surface:#FFFFFF;
+  --surface-soft:#F4F7F9;
+  --green:#18864B;
+  --amber:#B66B00;
+  --purple:#6F49A8;
+  --shadow:0 10px 30px rgba(27,54,71,.09);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--surface-soft);color:var(--ink);font-family:Inter,Segoe UI,Roboto,Arial,sans-serif}
+button,input,select{font:inherit}
+.shell{min-height:100vh;display:grid;grid-template-columns:245px 1fr}
+.sidebar{position:sticky;top:0;height:100vh;background:#fff;border-right:1px solid var(--line);padding:22px 18px;display:flex;flex-direction:column;z-index:10}
+.brand{display:flex;gap:12px;align-items:center;padding:4px 6px 22px;border-bottom:1px solid var(--line)}
+.brandmark{width:39px;height:39px;border-radius:10px;background:linear-gradient(135deg,var(--bosch-blue),var(--bosch-blue-dark));position:relative;box-shadow:0 6px 18px rgba(0,123,192,.25)}
+.brandmark:before,.brandmark:after{content:"";position:absolute;background:#fff;border-radius:2px}
+.brandmark:before{width:20px;height:4px;left:9px;top:10px;box-shadow:0 8px 0 #fff,0 16px 0 #fff}
+.brandmark:after{width:4px;height:20px;left:17px;top:9px;opacity:.35}
+.brand h1{font-size:15px;line-height:1.2;margin:0}.brand span{font-size:11px;color:var(--muted)}
+.nav{padding-top:18px;display:grid;gap:7px}.nav button{border:0;background:transparent;text-align:left;padding:11px 12px;border-radius:8px;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:10px}.nav button:hover,.nav button.active{background:#EAF5FB;color:var(--bosch-blue-dark);font-weight:650}.dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+.sidebar-note{margin-top:auto;border-top:1px solid var(--line);padding:18px 6px 0;font-size:11px;line-height:1.45;color:var(--muted)}
+.main{padding:28px 32px 44px;min-width:0}.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:22px}.topbar h2{font-size:27px;margin:0 0 6px}.topbar p{margin:0;color:var(--muted);font-size:14px}.update-pill{white-space:nowrap;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:12px;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:14px;margin-bottom:18px}.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:17px;box-shadow:0 4px 16px rgba(38,65,80,.04)}.kpi-label{font-size:12px;color:var(--muted);margin-bottom:9px}.kpi-value{font-size:27px;font-weight:750}.kpi-foot{font-size:11px;color:var(--muted);margin-top:5px}.kpi.blue{border-top:3px solid var(--bosch-blue)}.kpi.green{border-top:3px solid var(--green)}.kpi.amber{border-top:3px solid var(--amber)}.kpi.purple{border-top:3px solid var(--purple)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:0 4px 18px rgba(35,66,83,.04)}.filters{padding:15px;margin-bottom:18px;display:grid;grid-template-columns:2fr repeat(4,1fr) auto;gap:10px;align-items:center}.control{height:40px;border:1px solid #CCD7DE;border-radius:8px;background:#fff;padding:0 11px;color:var(--ink);min-width:0}.control:focus{outline:2px solid rgba(0,123,192,.18);border-color:var(--bosch-blue)}.btn{height:40px;border:0;border-radius:8px;padding:0 14px;cursor:pointer;font-weight:650}.btn-primary{background:var(--bosch-blue);color:#fff}.btn-primary:hover{background:var(--bosch-blue-dark)}.btn-ghost{background:#EEF3F6;color:var(--ink)}
+.section-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(270px,.55fr);gap:18px;margin-bottom:18px}.chart-panel{padding:18px}.panel-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.panel-title h3{font-size:15px;margin:0}.panel-title span{font-size:11px;color:var(--muted)}
+.bars{display:grid;gap:13px}.bar-row{display:grid;grid-template-columns:150px 1fr 34px;gap:10px;align-items:center;font-size:12px}.bar-track{height:9px;background:#EDF2F5;border-radius:10px;overflow:hidden}.bar-fill{height:100%;background:linear-gradient(90deg,var(--bosch-blue),#45A6D8);border-radius:10px}.bar-value{text-align:right;font-weight:700}
+.deadlines{padding:18px}.deadline-list{display:grid;gap:11px}.deadline{display:grid;grid-template-columns:52px 1fr;gap:11px;align-items:center;padding-bottom:10px;border-bottom:1px solid #EEF2F4}.deadline:last-child{border:0}.datebox{background:#EAF5FB;color:var(--bosch-blue-dark);border-radius:8px;text-align:center;padding:7px 4px}.datebox strong{display:block;font-size:17px}.datebox span{font-size:9px;text-transform:uppercase}.deadline h4{font-size:12px;margin:0 0 3px}.deadline p{font-size:10px;color:var(--muted);margin:0}
+.list-panel{padding:0;overflow:hidden}.list-head{display:flex;align-items:center;justify-content:space-between;padding:17px 18px;border-bottom:1px solid var(--line)}.list-head h3{font-size:15px;margin:0}.list-head span{font-size:12px;color:var(--muted)}.cards{display:grid;grid-template-columns:repeat(3,minmax(240px,1fr));gap:14px;padding:16px}.card{border:1px solid var(--line);border-radius:11px;background:#fff;padding:16px;display:flex;flex-direction:column;min-height:265px;transition:.16s ease;position:relative}.card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#BFD4DF}.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.agency{font-size:11px;font-weight:750;color:var(--bosch-blue-dark);text-transform:uppercase;letter-spacing:.04em}.fav{border:0;background:transparent;color:#A8B5BD;font-size:20px;cursor:pointer;padding:0}.fav.on{color:var(--bosch-red)}.card h4{font-size:15px;line-height:1.34;margin:9px 0 8px}.card p{font-size:12px;line-height:1.5;color:var(--muted);margin:0 0 13px}.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:13px}.tag{font-size:10px;border-radius:999px;background:#EFF4F6;padding:5px 8px;color:#4E626E}.status{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700}.status:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}.status.open{color:var(--green)}.status.review{color:var(--amber)}.status.closed{color:#8B98A0}.card-bottom{margin-top:auto;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #EEF2F4;padding-top:12px}.deadline-text{font-size:10px;color:var(--muted)}.details{border:0;background:transparent;color:var(--bosch-blue);cursor:pointer;font-size:11px;font-weight:700}
+.empty{padding:55px 20px;text-align:center;color:var(--muted);display:none}.footer-note{font-size:11px;color:var(--muted);margin-top:14px;text-align:right}
+.modal{position:fixed;inset:0;background:rgba(14,28,36,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:30}.modal.open{display:flex}.modal-box{background:#fff;width:min(760px,100%);max-height:88vh;overflow:auto;border-radius:14px;box-shadow:0 24px 80px rgba(0,0,0,.28)}.modal-head{display:flex;justify-content:space-between;gap:20px;padding:22px;border-bottom:1px solid var(--line)}.modal-head h3{margin:4px 0 0;font-size:21px}.close{border:0;background:#EFF3F5;width:34px;height:34px;border-radius:50%;cursor:pointer}.modal-body{padding:22px;display:grid;grid-template-columns:1fr 1fr;gap:18px}.detail-block{border-top:2px solid #E7EEF2;padding-top:10px}.detail-block.full{grid-column:1/-1}.detail-block h5{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:0 0 6px}.detail-block p{font-size:13px;line-height:1.55;margin:0}.source-link{color:var(--bosch-blue);word-break:break-word}
+@media(max-width:1100px){.shell{grid-template-columns:76px 1fr}.brand h1,.brand span,.nav button span,.sidebar-note{display:none}.brand{justify-content:center}.nav button{justify-content:center}.cards{grid-template-columns:repeat(2,minmax(240px,1fr))}.filters{grid-template-columns:2fr 1fr 1fr}.filters .control:nth-child(n+4){display:none}.kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.shell{display:block}.sidebar{height:auto;position:static;flex-direction:row;padding:10px 14px;border-right:0;border-bottom:1px solid var(--line)}.brand{border:0;padding:0}.nav{display:none}.main{padding:20px 14px}.topbar{display:block}.update-pill{display:inline-block;margin-top:12px}.kpis{grid-template-columns:1fr 1fr}.filters{grid-template-columns:1fr 1fr}.filters input{grid-column:1/-1}.section-grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.modal-body{grid-template-columns:1fr}.detail-block.full{grid-column:auto}.bar-row{grid-template-columns:110px 1fr 28px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="brandmark"></div><div><h1>Radar de Fomento</h1><span>Inovação & PD&I</span></div></div>
+    <nav class="nav">
+      <button class="active" onclick="scrollToSection('visao')"><i class="dot"></i><span>Visão geral</span></button>
+      <button onclick="scrollToSection('oportunidades')"><i class="dot"></i><span>Oportunidades</span></button>
+      <button onclick="showFavorites()"><i class="dot"></i><span>Favoritos</span></button>
+      <button onclick="exportCSV()"><i class="dot"></i><span>Exportar base</span></button>
+    </nav>
+    <div class="sidebar-note">Base inicial consolidada a partir das oportunidades analisadas no projeto “Editais e Oportunidades de Fomento”.</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar" id="visao">
+      <div><h2>Resumo de Oportunidades de Fomento</h2><p>Radar executivo para identificação, priorização e acompanhamento de editais de inovação.</p></div>
+      <div class="update-pill">Atualizado em 17 jul. 2026</div>
+    </header>
+
+    <section class="kpis">
+      <div class="kpi blue"><div class="kpi-label">Oportunidades mapeadas</div><div class="kpi-value" id="kpiTotal">0</div><div class="kpi-foot">na base consolidada</div></div>
+      <div class="kpi green"><div class="kpi-label">Abertas / em preparação</div><div class="kpi-value" id="kpiOpen">0</div><div class="kpi-foot">com potencial de submissão</div></div>
+      <div class="kpi amber"><div class="kpi-label">Prazos definidos</div><div class="kpi-value" id="kpiDeadline">0</div><div class="kpi-foot">com data registrada</div></div>
+      <div class="kpi purple"><div class="kpi-label">Agências / programas</div><div class="kpi-value" id="kpiAgencies">0</div><div class="kpi-foot">fontes de fomento</div></div>
+    </section>
+
+    <section class="panel filters">
+      <input class="control" id="search" placeholder="Buscar edital, agência, tecnologia ou palavra-chave..." oninput="applyFilters()" />
+      <select class="control" id="agencyFilter" onchange="applyFilters()"><option value="">Todas as agências</option></select>
+      <select class="control" id="themeFilter" onchange="applyFilters()"><option value="">Todas as temáticas</option></select>
+      <select class="control" id="statusFilter" onchange="applyFilters()"><option value="">Todos os status</option><option value="Aberto">Aberto</option><option value="Em preparação">Em preparação</option><option value="Monitoramento">Monitoramento</option><option value="Encerrado">Encerrado</option></select>
+      <select class="control" id="regionFilter" onchange="applyFilters()"><option value="">Todas as regiões</option></select>
+      <button class="btn btn-ghost" onclick="clearFilters()">Limpar</button>
+    </section>
+
+    <section class="section-grid">
+      <div class="panel chart-panel">
+        <div class="panel-title"><h3>Distribuição por temática principal</h3><span>Base filtrada</span></div>
+        <div class="bars" id="bars"></div>
+      </div>
+      <div class="panel deadlines">
+        <div class="panel-title"><h3>Próximos marcos</h3><span>Datas registradas</span></div>
+        <div class="deadline-list" id="deadlineList"></div>
+      </div>
+    </section>
+
+    <section class="panel list-panel" id="oportunidades">
+      <div class="list-head"><h3>Editais e oportunidades</h3><span id="resultCount"></span></div>
+      <div class="cards" id="cards"></div>
+      <div class="empty" id="empty">Nenhuma oportunidade encontrada com os filtros selecionados.</div>
+    </section>
+    <div class="footer-note">Status e prazos devem ser confirmados nos documentos oficiais antes da tomada de decisão.</div>
+  </main>
+</div>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box"><div class="modal-head"><div><div class="agency" id="mAgency"></div><h3 id="mTitle"></h3></div><button class="close" onclick="closeModal()">×</button></div><div class="modal-body" id="modalBody"></div></div>
+</div>
+
+<script>
+const opportunities = [
+ {id:1,agency:'FUNDEP / MOVER',title:'Linha V – Chamada de PD&I 01/2026',theme:'Mobilidade e indústria 4.0',status:'Em preparação',region:'Brasil',deadline:'',instrument:'Subvenção / apoio não reembolsável',beneficiary:'ICTs, empresas e arranjos conforme chamada',summary:'Chamada voltada a projetos de pesquisa, desenvolvimento e inovação aplicados à cadeia automotiva, com projetos organizados por linhas temáticas e participação empresarial.',fit:'Alta aderência para eletrificação, conectividade, sensores, manufatura avançada, materiais e descarbonização automotiva.',source:'https://mover.fundep.ufmg.br/'},
+ {id:2,agency:'FUNDEP / MOVER',title:'Linha V – Impulsionamento 01/2026',theme:'Mobilidade e indústria 4.0',status:'Em preparação',region:'Brasil',deadline:'',instrument:'Apoio não reembolsável',beneficiary:'Proponentes habilitados e parceiros industriais',summary:'Mecanismo de impulsionamento de propostas previamente habilitadas, com formação de arranjos e apoio empresarial para amadurecimento e execução dos projetos.',fit:'Permite à Bosch apoiar projetos de alta aderência tecnológica com contrapartida econômica, participação técnica e acesso antecipado aos resultados.',source:'https://mover.fundep.ufmg.br/'},
+ {id:3,agency:'FUNDEP / MOVER',title:'Linha IV – Impulsionamento 01/2026',theme:'Manufatura avançada',status:'Em preparação',region:'Brasil',deadline:'',instrument:'Apoio não reembolsável',beneficiary:'ICTs e empresas em arranjos cooperativos',summary:'Chamada para impulsionar projetos industriais cooperativos, incluindo desenvolvimento de processos, materiais, ferramental, digitalização e produtividade.',fit:'Potencial para manufatura, moldes, materiais, automação, rastreabilidade, eficiência industrial e validação de tecnologias em ambiente produtivo.',source:'https://mover.fundep.ufmg.br/'},
+ {id:4,agency:'FUNDEP / MOVER',title:'Chamada VECTO – Encomendas Tecnológicas',theme:'Descarbonização veicular',status:'Monitoramento',region:'Brasil',deadline:'',instrument:'Encomenda tecnológica',beneficiary:'ICTs e arranjos definidos nos anexos',summary:'Encomendas tecnológicas relacionadas à Plataforma VECTO, incluindo adaptação de software e desenvolvimento de métodos para determinação de resistência aerodinâmica.',fit:'Aderência para engenharia veicular, simulação, software automotivo, powertrain, eficiência energética e homologação.',source:'https://mover.fundep.ufmg.br/linha5/chamada-vecto/'},
+ {id:5,agency:'SENAI / MOVER',title:'Plataforma SENAI – MOVER Pesquisa e Desenvolvimento 2026',theme:'Mobilidade e indústria 4.0',status:'Aberto',region:'Brasil',deadline:'',instrument:'Fomento cooperativo',beneficiary:'Institutos SENAI, empresas e parceiros',summary:'Plataforma para projetos cooperativos de PD&I no âmbito do MOVER, conectando demandas industriais a competências dos Institutos SENAI de Inovação e Tecnologia.',fit:'Canal relevante para projetos aplicados, desenvolvimento de protótipos, validação industrial, testes e escalonamento tecnológico.',source:'https://www.portaldaindustria.com.br/senai/canais/plataforma-inovacao-para-industria/'},
+ {id:6,agency:'SENAI / MOVER',title:'Aliança Industrial – Chamada Contínua',theme:'Alianças industriais',status:'Aberto',region:'Brasil',deadline:'',instrument:'Chamada contínua / fomento cooperativo',beneficiary:'Empresas industriais e Institutos SENAI em alianças',summary:'Chamada contínua do Programa Prioritário Alavancagem de Alianças para o Setor Automotivo, destinada a projetos estruturantes e cooperativos de interesse industrial.',fit:'Adequada a projetos de maior porte, com múltiplos parceiros, desafios compartilhados e potencial de disseminação para a cadeia automotiva.',source:'https://www.portaldaindustria.com.br/senai/canais/plataforma-inovacao-para-industria/'},
+ {id:7,agency:'BMFTR / Alemanha',title:'Hub VDMA P2X4A – Geração de Energia e Power-to-X',theme:'Hidrogênio e Power-to-X',status:'Aberto',region:'Internacional',deadline:'2026-09-10',instrument:'Financiamento público alemão',beneficiary:'Consórcios e organizações elegíveis conforme diretriz',summary:'Oportunidade para projetos cooperativos em geração de energia, integração setorial e tecnologias Power-to-X, com submissão pelo portal easy-Online.',fit:'Aderência para eletrólise, hidrogênio, componentes, automação, sistemas energéticos, digitalização e aplicações industriais.',source:'https://www.bmftr.bund.de/SharedDocs/Bekanntmachungen/DE/2026/06/2026-06-15-foerderaufruf-energieerzeugung.html'},
+ {id:8,agency:'Fundação Araucária',title:'PMI 01/2026 – Tecnologias Quânticas, IA e Segurança Cibernética',theme:'IA e cibersegurança',status:'Monitoramento',region:'Paraná',deadline:'',instrument:'Manifestação de interesse',beneficiary:'ICTs e organizações elegíveis no Paraná',summary:'Manifestação de interesse para estruturação de iniciativas em tecnologias quânticas, inteligência artificial e segurança cibernética, com áreas temáticas detalhadas em anexos.',fit:'Aderência para IA industrial, segurança de sistemas embarcados, criptografia, computação avançada e infraestrutura digital.',source:'https://www.fappr.pr.gov.br/'},
+ {id:9,agency:'FAPERJ',title:'Editais Abertos FAPERJ 2026',theme:'Pesquisa e inovação',status:'Aberto',region:'Rio de Janeiro',deadline:'',instrument:'Bolsas, auxílios e apoio a projetos',beneficiary:'Pesquisadores, ICTs, startups e empresas conforme cada edital',summary:'Portfólio de chamadas abertas no Estado do Rio de Janeiro, abrangendo pesquisa científica, inovação, infraestrutura, empreendedorismo e formação de recursos humanos.',fit:'Possibilidade de parceria com ICTs fluminenses, acesso a infraestrutura e desenvolvimento de projetos com aplicação industrial.',source:'https://www.faperj.br/?id=28.5.7'},
+ {id:10,agency:'FINEP',title:'Linhas de apoio à inovação empresarial',theme:'Inovação empresarial',status:'Monitoramento',region:'Brasil',deadline:'',instrument:'Crédito, subvenção e investimento',beneficiary:'Empresas brasileiras e parceiros conforme instrumento',summary:'Conjunto de instrumentos para financiar pesquisa, desenvolvimento, inovação, infraestrutura e expansão tecnológica em empresas brasileiras.',fit:'Potencial para projetos estratégicos de maior escala, modernização tecnológica, desenvolvimento de produtos e implantação de capacidade de inovação.',source:'https://www.finep.gov.br/'},
+ {id:11,agency:'BNDES',title:'Instrumentos para inovação, indústria e descarbonização',theme:'Inovação empresarial',status:'Monitoramento',region:'Brasil',deadline:'',instrument:'Crédito e apoio financeiro',beneficiary:'Empresas e projetos elegíveis conforme produto',summary:'Instrumentos financeiros para inovação, transformação industrial, digitalização, eficiência energética e redução de emissões.',fit:'Aderência para investimentos industriais, escalonamento, novas linhas, eficiência energética e transição para tecnologias de baixo carbono.',source:'https://www.bndes.gov.br/'},
+ {id:12,agency:'SENAI / ICTs',title:'Projetos cooperativos e alianças tecnológicas',theme:'Manufatura avançada',status:'Monitoramento',region:'Brasil',deadline:'',instrument:'Projetos cooperativos',beneficiary:'Empresas, Institutos SENAI e ICTs',summary:'Oportunidades recorrentes para desenvolvimento cooperativo de soluções industriais, conectando demandas empresariais a infraestrutura laboratorial e competências tecnológicas.',fit:'Aplicável a provas de conceito, protótipos, testes, validação, industrialização e transferência de tecnologia.',source:'https://www.portaldaindustria.com.br/senai/'}
+];
+
+let filtered=[...opportunities];
+const favorites=new Set(JSON.parse(localStorage.getItem('fomentoFavorites')||'[]'));
+const statusClass=s=>s==='Aberto'?'open':s==='Em preparação'||s==='Monitoramento'?'review':'closed';
+const formatDate=d=>{if(!d)return 'Prazo a confirmar'; const x=new Date(d+'T12:00:00'); return x.toLocaleDateString('pt-BR')};
+const escapeHtml=s=>(s||'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+
+function init(){
+ populate('agencyFilter',[...new Set(opportunities.map(x=>x.agency))]);
+ populate('themeFilter',[...new Set(opportunities.map(x=>x.theme))]);
+ populate('regionFilter',[...new Set(opportunities.map(x=>x.region))]);
+ render();
+}
+function populate(id,values){const el=document.getElementById(id);values.sort().forEach(v=>el.insertAdjacentHTML('beforeend',`<option>${escapeHtml(v)}</option>`))}
+function applyFilters(){
+ const q=document.getElementById('search').value.toLowerCase().trim();
+ const agency=document.getElementById('agencyFilter').value, theme=document.getElementById('themeFilter').value, status=document.getElementById('statusFilter').value, region=document.getElementById('regionFilter').value;
+ filtered=opportunities.filter(o=>(!q||Object.values(o).join(' ').toLowerCase().includes(q))&&(!agency||o.agency===agency)&&(!theme||o.theme===theme)&&(!status||o.status===status)&&(!region||o.region===region));render();
+}
+function clearFilters(){['search','agencyFilter','themeFilter','statusFilter','regionFilter'].forEach(id=>document.getElementById(id).value='');filtered=[...opportunities];render()}
+function render(){renderKPIs();renderBars();renderDeadlines();renderCards()}
+function renderKPIs(){
+ document.getElementById('kpiTotal').textContent=filtered.length;
+ document.getElementById('kpiOpen').textContent=filtered.filter(x=>['Aberto','Em preparação'].includes(x.status)).length;
+ document.getElementById('kpiDeadline').textContent=filtered.filter(x=>x.deadline).length;
+ document.getElementById('kpiAgencies').textContent=new Set(filtered.map(x=>x.agency)).size;
+}
+function renderBars(){
+ const c={};filtered.forEach(x=>c[x.theme]=(c[x.theme]||0)+1);const max=Math.max(1,...Object.values(c));
+ document.getElementById('bars').innerHTML=Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="bar-row"><span>${escapeHtml(k)}</span><div class="bar-track"><div class="bar-fill" style="width:${v/max*100}%"></div></div><span class="bar-value">${v}</span></div>`).join('')||'<span style="font-size:12px;color:var(--muted)">Sem dados para exibir.</span>';
+}
+function renderDeadlines(){
+ const items=filtered.filter(x=>x.deadline).sort((a,b)=>a.deadline.localeCompare(b.deadline)).slice(0,4);
+ document.getElementById('deadlineList').innerHTML=items.length?items.map(x=>{const d=new Date(x.deadline+'T12:00:00');return `<div class="deadline"><div class="datebox"><strong>${String(d.getDate()).padStart(2,'0')}</strong><span>${d.toLocaleDateString('pt-BR',{month:'short'}).replace('.','')}</span></div><div><h4>${escapeHtml(x.title)}</h4><p>${escapeHtml(x.agency)}</p></div></div>`}).join(''):'<p style="font-size:12px;color:var(--muted)">Nenhum prazo definido na seleção atual.</p>';
+}
+function renderCards(){
+ const el=document.getElementById('cards');document.getElementById('resultCount').textContent=`${filtered.length} resultado(s)`;document.getElementById('empty').style.display=filtered.length?'none':'block';
+ el.innerHTML=filtered.map(o=>`<article class="card"><div class="card-top"><div class="agency">${escapeHtml(o.agency)}</div><button class="fav ${favorites.has(o.id)?'on':''}" title="Favoritar" onclick="toggleFavorite(${o.id})">${favorites.has(o.id)?'♥':'♡'}</button></div><h4>${escapeHtml(o.title)}</h4><p>${escapeHtml(o.summary)}</p><div class="tags"><span class="tag">${escapeHtml(o.theme)}</span><span class="tag">${escapeHtml(o.region)}</span><span class="tag">${escapeHtml(o.instrument)}</span></div><div class="card-bottom"><div><div class="status ${statusClass(o.status)}">${escapeHtml(o.status)}</div><div class="deadline-text">${formatDate(o.deadline)}</div></div><button class="details" onclick="openModal(${o.id})">Ver detalhes →</button></div></article>`).join('');
+}
+function toggleFavorite(id){favorites.has(id)?favorites.delete(id):favorites.add(id);localStorage.setItem('fomentoFavorites',JSON.stringify([...favorites]));renderCards()}
+function showFavorites(){filtered=opportunities.filter(x=>favorites.has(x.id));render();document.getElementById('oportunidades').scrollIntoView({behavior:'smooth'})}
+function openModal(id){const o=opportunities.find(x=>x.id===id);document.getElementById('mAgency').textContent=o.agency;document.getElementById('mTitle').textContent=o.title;document.getElementById('modalBody').innerHTML=`
+ <div class="detail-block"><h5>Status</h5><p><span class="status ${statusClass(o.status)}">${escapeHtml(o.status)}</span></p></div>
+ <div class="detail-block"><h5>Prazo</h5><p>${formatDate(o.deadline)}</p></div>
+ <div class="detail-block"><h5>Temática</h5><p>${escapeHtml(o.theme)}</p></div>
+ <div class="detail-block"><h5>Abrangência</h5><p>${escapeHtml(o.region)}</p></div>
+ <div class="detail-block"><h5>Instrumento</h5><p>${escapeHtml(o.instrument)}</p></div>
+ <div class="detail-block"><h5>Elegibilidade macro</h5><p>${escapeHtml(o.beneficiary)}</p></div>
+ <div class="detail-block full"><h5>Visão geral</h5><p>${escapeHtml(o.summary)}</p></div>
+ <div class="detail-block full"><h5>Potencial para a Bosch</h5><p>${escapeHtml(o.fit)}</p></div>
+ <div class="detail-block full"><h5>Fonte oficial</h5><p><a class="source-link" href="${escapeHtml(o.source)}" target="_blank" rel="noopener">${escapeHtml(o.source)}</a></p></div>`;document.getElementById('modal').classList.add('open')}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function exportCSV(){const cols=['Agência','Edital','Temática','Status','Região','Prazo','Instrumento','Elegibilidade','Resumo','Potencial Bosch','Fonte'];const rows=opportunities.map(o=>[o.agency,o.title,o.theme,o.status,o.region,o.deadline,o.instrument,o.beneficiary,o.summary,o.fit,o.source]);const csv=[cols,...rows].map(r=>r.map(v=>'"'+String(v||'').replace(/"/g,'""')+'"').join(';')).join('\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='base_oportunidades_fomento.csv';a.click();URL.revokeObjectURL(a.href)}
+function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+init();
+</script>
+</body>
+</html>
